@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nivara Barber Shop System</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand__mark">Nivara</span>
+    </div>
+
+    <nav class="nav">
+      <button class="tab active" data-tab="agenda"><span class="tab__icon">◷</span> Agenda</button>
+      <button class="tab" data-tab="barberos"><span class="tab__icon">✂</span> Barberos</button>
+      <button class="tab" data-tab="servicios"><span class="tab__icon">§</span> Servicios</button>
+      <button class="tab" data-tab="cobros"><span class="tab__icon">$</span> Cobros</button>
+      <button class="tab" data-tab="portafolio"><span class="tab__icon">📷</span> Portafolio</button>
+      <button class="tab" data-tab="equipo"><span class="tab__icon">◈</span> Equipo</button>
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="user-chip mono" id="userChip">Cargando…</div>
+      <button class="btn btn-secondary btn-sm" id="logoutBtn" style="width:100%;">Cerrar sesión</button>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <!-- ═══ AGENDA ═══ -->
+    <section id="view-agenda" class="view">
+      <div class="page-head">
+        <h1>Agenda</h1>
+        <button class="btn btn-primary btn-sm" id="btnNuevaCita">+ Nueva cita</button>
+      </div>
+      <p class="page-sub">Citas del negocio, por fecha.</p>
+
+      <div class="toolbar">
+        <input type="date" id="filtroFecha">
+        <select id="filtroEstado">
+          <option value="">Todos los estados</option>
+          <option value="pendiente">Pendiente</option>
+          <option value="confirmada">Confirmada</option>
+          <option value="completada">Completada</option>
+          <option value="cancelada">Cancelada</option>
+        </select>
+        <div class="spacer"></div>
+      </div>
+
+      <div class="card">
+        <table>
+          <thead>
+            <tr>
+              <th>Hora</th><th>Cliente</th><th>Barbero</th><th>Servicio</th><th>Estado</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="tablaCitas"></tbody>
+        </table>
+        <div id="citasEmpty" class="empty-state hidden">Sin citas para este filtro. Agrega una con "+ Nueva cita".</div>
+      </div>
+    </section>
+
+    <!-- ═══ BARBEROS ═══ -->
+    <section id="view-barberos" class="view hidden">
+      <div class="page-head">
+        <h1>Barberos</h1>
+        <button class="btn btn-primary btn-sm" id="btnNuevoBarbero">+ Nuevo barbero</button>
+      </div>
+      <p class="page-sub">Equipo activo y su comisión por servicio.</p>
+
+      <div class="card">
+        <table>
+          <thead>
+            <tr><th>Nombre</th><th>Teléfono</th><th>Comisión</th><th>Reseña</th><th>Estado</th><th></th></tr>
+          </thead>
+          <tbody id="tablaBarberos"></tbody>
+        </table>
+        <div id="barberosEmpty" class="empty-state hidden">Aún no hay barberos registrados.</div>
+      </div>
+    </section>
+
+    <!-- ═══ SERVICIOS ═══ -->
+    <section id="view-servicios" class="view hidden">
+      <div class="page-head">
+        <h1>Servicios</h1>
+        <button class="btn btn-primary btn-sm" id="btnNuevoServicio">+ Nuevo servicio</button>
+      </div>
+      <p class="page-sub">Catálogo de cortes y tratamientos, con precio y duración.</p>
+
+      <div class="card">
+        <table>
+          <thead>
+            <tr><th>Servicio</th><th>Precio</th><th>Duración</th><th>Estado</th><th></th></tr>
+          </thead>
+          <tbody id="tablaServicios"></tbody>
+        </table>
+        <div id="serviciosEmpty" class="empty-state hidden">Aún no hay servicios en el catálogo.</div>
+      </div>
+    </section>
+
+    <!-- ═══ COBROS ═══ -->
+    <section id="view-cobros" class="view hidden">
+      <div class="page-head">
+        <h1>Cobros</h1>
+        <button class="btn btn-primary btn-sm" id="btnNuevoCobro">+ Registrar cobro</button>
+      </div>
+      <p class="page-sub">Pagos recibidos y comisión generada por barbero.</p>
+
+      <div class="kpis">
+        <div class="kpi">
+          <div class="kpi__label">Ingresos del día</div>
+          <div class="kpi__value accent-green" id="kpiIngresosDia">$0</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi__label">Ingresos del mes</div>
+          <div class="kpi__value accent-blue" id="kpiIngresosMes">$0</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi__label">Comisiones del mes</div>
+          <div class="kpi__value accent-brass" id="kpiComisionesMes">$0</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi__label">Cobros registrados</div>
+          <div class="kpi__value accent-red" id="kpiTotalCobros">0</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <table>
+          <thead>
+            <tr><th>Fecha</th><th>Barbero</th><th>Monto</th><th>Método</th><th>Comisión</th><th></th></tr>
+          </thead>
+          <tbody id="tablaCobros"></tbody>
+        </table>
+        <div id="cobrosEmpty" class="empty-state hidden">Aún no hay cobros registrados.</div>
+      </div>
+    </section>
+
+    <!-- ═══ PORTAFOLIO ═══ -->
+    <section id="view-portafolio" class="view hidden">
+      <div class="page-head">
+        <h1>Portafolio</h1>
+        <label class="btn btn-primary btn-sm" style="cursor:pointer;">
+          + Subir foto
+          <input type="file" id="inputFoto" accept="image/*" multiple style="display:none;">
+        </label>
+      </div>
+      <p class="page-sub" id="portafolioSub">Fotos de cortes y diseños.</p>
+
+      <div class="toolbar" id="filtroBarberoWrap">
+        <select id="filtroPortafolioBarbero"><option value="">Todos los barberos</option></select>
+      </div>
+
+      <div id="galeriaPortafolio" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px;"></div>
+      <div id="portafolioEmpty" class="empty-state hidden">Aún no hay fotos. Sube la primera con "+ Subir foto".</div>
+    </section>
+
+    <!-- ═══ EQUIPO (solo Dueño) ═══ -->
+    <section id="view-equipo" class="view hidden">
+      <div class="page-head">
+        <h1>Equipo</h1>
+        <button class="btn btn-primary btn-sm" id="btnNuevoUsuario">+ Vincular usuario</button>
+      </div>
+      <p class="page-sub">Cuentas con acceso al sistema y su rol (Dueño ve todo, Barbero ve solo lo suyo).</p>
+
+      <div class="card">
+        <table>
+          <thead>
+            <tr><th>Nombre</th><th>UID</th><th>Rol</th><th>Barbero vinculado</th><th></th></tr>
+          </thead>
+          <tbody id="tablaUsuarios"></tbody>
+        </table>
+        <div id="usuariosEmpty" class="empty-state hidden">Aún no hay accesos vinculados.</div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ═══ MODAL genérico (se rellena por JS según la acción) ═══ -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="modalTitle">Título</h3>
+      <button class="icon-btn" id="modalClose">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" id="modalCancel">Cancelar</button>
+      <button class="btn btn-primary" id="modalSave">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

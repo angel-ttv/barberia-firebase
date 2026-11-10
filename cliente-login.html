@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi cuenta — Nivara Barber Shop</title>
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  .authTabs{display:flex;gap:6px;margin-bottom:20px;background:var(--paper-dim);padding:4px;border-radius:8px;}
+  .authTabs button{flex:1;padding:9px;border:none;background:none;border-radius:6px;font-size:13px;font-weight:600;opacity:.55;}
+  .authTabs button.active{background:#fff;opacity:1;box-shadow:0 1px 3px rgba(0,0,0,.1);}
+</style>
+</head>
+<body>
+
+<div class="login-screen">
+  <div class="login-card">
+    <div class="pole-stripe"></div>
+    <div class="login-card__body">
+      <div class="brand">
+        <span class="brand__mark">Nivara</span>
+        <span class="brand__sub">Mi cuenta</span>
+      </div>
+      <p class="login-tagline">Inicia sesión para agendar, ver tu historial y dejar reseñas.</p>
+
+      <div class="authTabs">
+        <button type="button" id="tabLogin" class="active">Iniciar sesión</button>
+        <button type="button" id="tabRegister">Crear cuenta</button>
+      </div>
+
+      <div id="authError" class="login-error"></div>
+
+      <!-- Iniciar sesión -->
+      <form id="loginForm">
+        <div class="field"><label for="loginEmail">Correo</label><input type="email" id="loginEmail" required></div>
+        <div class="field"><label for="loginPassword">Contraseña</label><input type="password" id="loginPassword" required></div>
+        <button type="submit" class="btn btn-primary" id="loginBtn">Entrar</button>
+      </form>
+
+      <!-- Crear cuenta -->
+      <form id="registerForm" class="hidden">
+        <div class="field"><label for="regNombre">Nombre completo</label><input id="regNombre" required></div>
+        <div class="field"><label for="regTelefono">Teléfono</label><input id="regTelefono" required inputmode="tel"></div>
+        <div class="field"><label for="regEmail">Correo</label><input type="email" id="regEmail" required></div>
+        <div class="field"><label for="regPassword">Contraseña</label><input type="password" id="regPassword" required minlength="6"></div>
+        <button type="submit" class="btn btn-primary" id="registerBtn">Crear cuenta</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="js/cliente-auth.js"></script>
+</body>
+</html>

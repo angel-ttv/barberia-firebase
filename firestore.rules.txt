@@ -1,0 +1,100 @@
+// Pega esto en Firebase Console → Firestore Database → Reglas
+// Modelo de roles:
+//  - "usuarios/{uid}"  → personal (Dueño/Barbero): { rol, barberoId, nombre }
+//  - "clientes/{uid}"  → clientes con cuenta: { nombre, telefono, email }
+//  - Dueño: acceso total.
+//  - Barbero: solo ve/edita SUS citas y SUS cobros.
+//  - Cliente: solo ve SUS propias citas y puede reseñar las que ya se completaron.
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function autenticado() {
+      return request.auth != null;
+    }
+
+    function miUsuario() {
+      return get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data;
+    }
+
+    function esDueño() {
+      return autenticado() &&
+        exists(/databases/$(database)/documents/usuarios/$(request.auth.uid)) &&
+        miUsuario().rol == 'dueño';
+    }
+
+    function miBarberoId() {
+      return (autenticado() &&
+        exists(/databases/$(database)/documents/usuarios/$(request.auth.uid)))
+        ? miUsuario().barberoId
+        : null;
+    }
+
+    // ── Personal: usuarios y roles ──
+    match /usuarios/{uid} {
+      allow read: if autenticado() && (request.auth.uid == uid || esDueño());
+      allow create: if esDueño() ||
+        (autenticado() && request.auth.uid == uid && !exists(/databases/$(database)/documents/usuarios/$(uid)));
+      allow update, delete: if esDueño();
+    }
+
+    // ── Clientes: perfil propio ──
+    match /clientes/{uid} {
+      allow read, write: if autenticado() && request.auth.uid == uid;
+      allow read: if esDueño();
+    }
+
+    // ── Catálogos: lectura pública, edición solo Dueño ──
+    match /barberos/{id} {
+      allow read: if true;
+      allow write: if esDueño();
+    }
+
+    match /servicios/{id} {
+      allow read: if true;
+      allow write: if esDueño();
+    }
+
+    // ── Citas ──
+    match /citas/{id} {
+      allow create: if autenticado() && (
+        request.resource.data.clienteUid == request.auth.uid ||
+        esDueño() ||
+        request.resource.data.barberoId == miBarberoId()
+      );
+      allow read: if esDueño() ||
+        (autenticado() && resource.data.barberoId == miBarberoId()) ||
+        (autenticado() && resource.data.clienteUid == request.auth.uid);
+      allow update, delete: if esDueño() ||
+        (autenticado() && resource.data.barberoId == miBarberoId());
+    }
+
+    // ── Pagos: solo personal ──
+    match /pagos/{id} {
+      allow create: if autenticado() && (esDueño() || request.resource.data.barberoId == miBarberoId());
+      allow read: if esDueño() || (autenticado() && resource.data.barberoId == miBarberoId());
+      allow update, delete: if esDueño();
+    }
+
+    // ── Portafolio: fotos de trabajos de cada barbero ──
+    match /portafolio/{id} {
+      allow read: if true;
+      allow create: if autenticado() &&
+        (esDueño() || request.resource.data.barberoId == miBarberoId()) &&
+        request.resource.data.subidoPorUid == request.auth.uid;
+      allow delete: if esDueño() || (autenticado() && resource.data.subidoPorUid == request.auth.uid);
+    }
+
+    // ── Reseñas: públicas para leer; solo el cliente dueño de una cita
+    //    completada puede crear/editar la suya ──
+    match /resenas/{id} {
+      allow read: if true;
+      allow create: if autenticado() &&
+        request.resource.data.clienteUid == request.auth.uid &&
+        get(/databases/$(database)/documents/citas/$(request.resource.data.citaId)).data.clienteUid == request.auth.uid &&
+        get(/databases/$(database)/documents/citas/$(request.resource.data.citaId)).data.estado == 'completada';
+      allow update, delete: if autenticado() && resource.data.clienteUid == request.auth.uid;
+    }
+  }
+}

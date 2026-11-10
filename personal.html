@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nivara Barber System — Acceso de personal</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="login-screen">
+  <div class="login-card">
+    <div class="pole-stripe"></div>
+    <div class="login-card__body">
+      <div class="brand">
+        <span class="brand__mark">Nivara</span>
+        <span class="brand__sub">Barber System</span>
+      </div>
+      <p class="login-tagline">Agenda, cobros y comisiones en un solo lugar.</p>
+
+      <div id="loginError" class="login-error"></div>
+
+      <form id="loginForm">
+        <div class="field">
+          <label for="email">Correo</label>
+          <input type="email" id="email" required autocomplete="username" placeholder="tu@barberia.com">
+        </div>
+        <div class="field">
+          <label for="password">Contraseña</label>
+          <input type="password" id="password" required autocomplete="current-password" placeholder="••••••••">
+        </div>
+        <button type="submit" class="btn btn-primary" id="loginBtn">Entrar</button>
+      </form>
+
+      <p style="font-size:12px; opacity:.55; margin-top:16px; text-align:center;">
+        ¿Primera vez? Pide a un administrador que cree tu usuario desde
+        Firebase Authentication.
+      </p>
+      <p style="font-size:12px; opacity:.4; margin-top:6px; text-align:center;">
+        <a href="index.html">← Volver al sitio</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="js/auth.js"></script>
+</body>
+</html>

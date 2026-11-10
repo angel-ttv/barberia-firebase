@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nivara Barber Shop — Agenda tu corte</title>
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  /* ── Ajusta estos datos a tu negocio real ── */
+  :root { --landing-negocio: "Nivara Barber Shop"; }
+
+  .lp-header{
+    position:sticky; top:0; z-index:10;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:16px 6vw; background:rgba(28,26,23,0.92); backdrop-filter:blur(6px);
+  }
+  .lp-header .brand__mark{color:var(--paper); font-size:20px;}
+  .lp-header nav a{color:var(--paper); opacity:.7; font-size:13px; margin-left:22px; text-decoration:none;}
+  .lp-header nav a:hover{opacity:1;}
+  .lp-header .btn{width:auto; padding:9px 18px; font-size:13px;}
+
+  .lp-hero{
+    background:
+      radial-gradient(circle at 15% 20%, rgba(176,141,87,0.14), transparent 45%),
+      radial-gradient(circle at 85% 80%, rgba(44,74,110,0.18), transparent 50%),
+      var(--ink);
+    color:var(--paper);
+    padding:90px 6vw 70px;
+    text-align:left;
+  }
+  .lp-hero__eyebrow{font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.12em; color:var(--brass-light); text-transform:uppercase;}
+  .lp-hero h1{font-size:clamp(38px,6vw,64px); line-height:1.02; margin:14px 0 18px; max-width:11ch;}
+  .lp-hero p{max-width:46ch; opacity:.7; font-size:16px; line-height:1.5; margin-bottom:30px;}
+  .lp-hero .cta-row{display:flex; gap:12px; flex-wrap:wrap;}
+  .lp-hero .btn{width:auto; padding:14px 26px; font-size:14.5px;}
+
+  .lp-section{padding:64px 6vw;}
+  .lp-section h2{font-size:26px; margin-bottom:6px;}
+  .lp-section__sub{opacity:.55; font-size:13.5px; margin-bottom:30px;}
+
+  .lp-servicios{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px;}
+  .lp-servicio-card{background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow);}
+  .lp-servicio-card h3{font-size:15px; margin-bottom:6px; text-transform:none; letter-spacing:0;}
+  .lp-servicio-card .precio{font-family:'JetBrains Mono',monospace; color:var(--brass); font-weight:600; font-size:15px;}
+  .lp-servicio-card .dur{opacity:.5; font-size:12px; margin-top:2px;}
+
+  .lp-barberos{display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:14px;}
+  .lp-barbero-card{background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:20px 16px; text-align:center; box-shadow:var(--shadow);}
+  .lp-barbero-avatar{width:56px; height:56px; border-radius:50%; background:var(--ink); color:var(--paper); display:grid; place-items:center; font-family:'Oswald',sans-serif; font-size:20px; margin:0 auto 10px;}
+  .lp-barbero-card h3{font-size:14px; text-transform:none; letter-spacing:0; margin-bottom:4px;}
+  .lp-barbero-card .cal{font-size:12.5px; color:var(--brass);}
+
+  .lp-cta-strip{background:var(--barber-red); color:#fff; padding:46px 6vw; text-align:center;}
+  .lp-cta-strip h2{color:#fff; margin-bottom:14px;}
+  .lp-cta-strip .btn{width:auto; padding:14px 30px; display:inline-block;}
+
+  .lp-footer{background:var(--ink); color:var(--paper); padding:36px 6vw; font-size:13px; opacity:.6; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+  .lp-footer a{color:var(--paper);}
+
+  @media (max-width:700px){
+    .lp-header nav{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="pole-stripe"></div>
+
+<header class="lp-header">
+  <div class="brand"><span class="brand__mark">Nivara</span></div>
+  <nav>
+    <a href="#servicios">Servicios</a>
+    <a href="#trabajos">Trabajos</a>
+    <a href="#equipo">Equipo</a>
+    <a href="portal-cliente.html">Mis citas</a>
+  </nav>
+  <a href="reservar.html" class="btn btn-primary">Reservar</a>
+</header>
+
+<section class="lp-hero">
+  <div class="lp-hero__eyebrow">Barbería · Riviera Maya</div>
+  <h1>Estilo con oficio, cita en minutos.</h1>
+  <p>Agenda tu corte en línea, elige a tu barbero de confianza y guarda tu historial —
+    sin llamadas, sin esperar.</p>
+  <div class="cta-row">
+    <a href="reservar.html" class="btn btn-primary">Reservar cita</a>
+    <a href="#servicios" class="btn btn-secondary">Ver servicios</a>
+  </div>
+</section>
+
+<section class="lp-section" id="servicios">
+  <h2>Servicios</h2>
+  <p class="lp-section__sub">Precios y duración estimada de cada corte.</p>
+  <div class="lp-servicios" id="lpServicios">
+    <div class="empty-state">Cargando servicios…</div>
+  </div>
+</section>
+
+<section class="lp-section" id="equipo" style="background:var(--paper-dim);">
+  <h2>Nuestro equipo</h2>
+  <p class="lp-section__sub">Elige con quién quieres tu corte.</p>
+  <div class="lp-barberos" id="lpBarberos">
+    <div class="empty-state">Cargando equipo…</div>
+  </div>
+</section>
+
+<section class="lp-section" id="trabajos">
+  <h2>Trabajos recientes</h2>
+  <p class="lp-section__sub">Cortes y diseños hechos por el equipo.</p>
+  <div class="lp-galeria" id="lpGaleria" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:12px;">
+    <div class="empty-state">Cargando fotos…</div>
+  </div>
+</section>
+
+<section class="lp-cta-strip">
+  <h2>¿Listo para tu próximo corte?</h2>
+  <a href="reservar.html" class="btn btn-primary" style="background:var(--paper); color:var(--ink);">Reservar ahora</a>
+</section>
+
+<footer class="lp-footer">
+  <span>Nivara Barber Shop — Riviera Maya</span>
+  <span><a href="personal.html">Acceso de personal</a></span>
+</footer>
+
+<script type="module" src="js/landing.js"></script>
+</body>
+</html>

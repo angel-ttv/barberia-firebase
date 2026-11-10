@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mis citas — Nivara Barber Shop</title>
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  .clientShell{max-width:640px;margin:0 auto;padding:28px 20px 60px;}
+  .clientTop{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+  .clientTop a{font-size:12px;opacity:.6;text-decoration:underline;}
+  .citaCard{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin-bottom:12px;box-shadow:var(--shadow);}
+  .citaCard__head{display:flex;justify-content:space-between;align-items:flex-start;}
+  .citaCard__fecha{font-family:'JetBrains Mono',monospace;font-size:12px;opacity:.55;margin-top:4px;}
+  .stars{font-size:20px;letter-spacing:3px;cursor:pointer;color:var(--brass-light);user-select:none;}
+  .stars span.on{color:var(--brass);}
+  .reviewBox textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:10px;font-family:inherit;font-size:13px;margin:10px 0;resize:vertical;min-height:60px;}
+  .reviewDone{font-size:12.5px;opacity:.6;margin-top:8px;}
+</style>
+</head>
+<body>
+
+<div class="clientShell">
+  <div class="pole-stripe" style="border-radius:6px; margin-bottom:18px;"></div>
+
+  <div class="clientTop">
+    <div class="brand"><span class="brand__mark">Mis citas</span></div>
+    <span>
+      <a href="reservar.html">+ Nueva cita</a> &nbsp;·&nbsp;
+      <a href="#" id="logoutLink">Salir</a>
+    </span>
+  </div>
+
+  <div id="citasLista"></div>
+  <div id="citasEmpty" class="empty-state hidden">Aún no tienes citas. <a href="reservar.html">Agenda la primera</a>.</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module" src="js/portal-cliente.js"></script>
+</body>
+</html>
